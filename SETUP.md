@@ -1,18 +1,18 @@
 # TrustLens AI - Local Setup Instructions
 
-This guide provides step-by-step instructions to set up and run the TrustLens AI platform on a local machine (tested on Windows).
+This guide provides step-by-step instructions to set up and run the TrustLens AI platform on a local machine.
 
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
 1.  **Node.js**: Version 18.x or later.
-2.  **npm** or **yarn**: Package manager for Node.js.
-3.  **MySQL Server**: A local MySQL instance. You can use tools like XAMPP, WAMP, or Docker.
-4.  **Firebase Account**: A Google Firebase project is required for authentication.
+2.  **npm**: Package manager for Node.js.
+3.  **Python**: Version 3.8 or later (for optional ML model training).
+4.  **Firebase Account**: A Google Firebase project is required for authentication (though the scaffold runs without it).
 
 ---
 
-## 1. Install Dependencies
+## 1. Install Project Dependencies
 
 Clone the repository and navigate into the project directory. Then, install the required npm packages.
 
@@ -24,9 +24,9 @@ npm install
 
 ---
 
-## 2. Firebase Configuration
+## 2. Firebase Configuration (Optional but Recommended)
 
-The application uses Firebase for authentication.
+The application is scaffolded to use Firebase for authentication. While the UI is currently mocked, you can connect it to a real Firebase backend.
 
 1.  **Create a Firebase Project**:
     - Go to the [Firebase Console](https://console.firebase.google.com/).
@@ -56,35 +56,18 @@ The application uses Firebase for authentication.
     NEXT_PUBLIC_FIREBASE_APP_ID="YOUR_APP_ID"
     ```
 
----
-
-## 3. MySQL Database Setup
-
-1.  **Start MySQL Server**:
-    - Ensure your local MySQL server is running.
-
-2.  **Create a Database**:
-    - Using a MySQL client (like MySQL Workbench, phpMyAdmin, or command line), create a new database.
-    - `CREATE DATABASE trustlens_db;`
-
-3.  **Run Migrations**:
-    - The `schema.sql` file in the project root contains the table definitions.
-    - Import or execute the contents of `schema.sql` into your `trustlens_db` database to create the necessary tables.
-
-4.  **Configure Database Connection**:
-    - Add your MySQL connection details to the `.env.local` file. The application's database library (not included in this scaffold) would use these variables.
+5.  **Set up Genkit AI**:
+    - The project uses Genkit for AI-powered analysis. You need to provide a Google AI API key.
+    - Visit [Google AI Studio](https://aistudio.google.com/app/apikey) to get your API key.
+    - Add the key to your `.env.local` file.
 
     ```.env.local
-    DB_HOST="localhost"
-    DB_PORT="3306"
-    DB_USER="your_mysql_user"
-    DB_PASSWORD="your_mysql_password"
-    DB_NAME="trustlens_db"
+    GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
     ```
 
 ---
 
-## 4. Running the Application
+## 3. Running the Application
 
 Once the configuration is complete, you can start the development server.
 
@@ -96,42 +79,62 @@ The application will be available at `http://localhost:9002`.
 
 ---
 
-## 5. Testing the Application
+## 4. Testing the Application
 
 1.  **Login**:
-    - The login page is the entry point. For this scaffold, a default user is provided.
-    - Click the "Sign in" button to navigate to the dashboard at `/dashboard`.
+    - The login page is the entry point. The scaffold uses mocked user data, so you can click the "Sign in" button directly to navigate to the dashboard at `/dashboard`.
 
 2.  **Review Analysis**:
-    - On the dashboard, you can use the main panel to analyze a review.
+    - On the dashboard, use the main panel to analyze a review.
     - Enter any text, select options from the dropdowns, and click "Analyze Review".
     - You will see a loading state, followed by the analysis results powered by Google Genkit AI.
 
 3.  **Admin and User Roles**:
-    - The scaffold currently simulates a logged-in user. To test admin functionality, you would typically need to set up Firebase custom claims.
-    - For now, you can navigate directly to admin pages like `/admin/dashboard` to see the placeholder UI. In a real setup, these routes would be protected.
+    - The scaffold simulates a logged-in user with an 'admin' role by default. This gives you access to the Admin section in the sidebar.
+    - You can navigate to admin pages like `/admin/dashboard` to see the UI. In a real setup, these routes would be protected based on user roles (e.g., Firebase Custom Claims).
 
 ---
 
-## 6. Running ML Demo Scripts (Optional)
+## 5. Running ML Demo Scripts (Optional)
 
-The ML models in the `/models/demo` directory are not used for live predictions but can be trained for demonstration.
+The ML models in the `/models/demo` directory are for demonstration purposes only and are **not** used for live predictions in the app. They showcase a potential training pipeline.
 
 1.  **Setup Python Environment**:
-    - Ensure you have Python installed.
-    - Create a virtual environment and install dependencies from a `requirements.txt` file (you would need to create this file based on the scripts' imports like `torch`, `xgboost`, `shap`, `pandas`, `scikit-learn`).
+    - Ensure you have Python installed (3.8+ recommended).
+    - Navigate to the `models/demo` directory.
+    - Create a virtual environment and install the required Python packages.
 
     ```bash
+    # From the project root
+    cd models/demo
+
+    # Create a virtual environment
     python -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
-    pip install -r models/demo/requirements.txt
+
+    # Activate the environment
+    # On Windows:
+    # venv\Scripts\activate
+    # On macOS/Linux:
+    # source venv/bin/activate
+
+    # Install dependencies
+    pip install -r requirements.txt
     ```
 
-2.  **Run Scripts**:
-    - You can then run the training and explanation scripts.
+2.  **Download Dataset (Manual Step)**:
+    - These scripts assume you have the "Amazon Polarity" dataset.
+    - Download it from [Kaggle](https://www.kaggle.com/datasets/bittlingmayer/amazonreviews) or another source. It typically includes `train.csv` and `test.csv`.
+    - Place the `train.csv` and `test.csv` files inside the `models/demo/data/` directory (you may need to create the `data` folder).
+
+3.  **Run Scripts**:
+    - You can now run the training and explanation scripts. The training script will save model artifacts into the `models/demo/bin/` directory.
 
     ```bash
-    python models/demo/train.py
+    # Run the training pipeline
+    python train.py
+
+    # Run the explanation script (after training is complete)
+    python explain.py
     ```
 
 ---
@@ -139,5 +142,5 @@ The ML models in the `/models/demo` directory are not used for live predictions 
 ## Troubleshooting
 
 -   **Firebase Errors**: Double-check that your `.env.local` file has the correct `NEXT_PUBLIC_` prefixes and that the values match your Firebase project's web config.
--   **Database Errors**: Ensure your MySQL server is running and that the database name and credentials in `.env.local` are correct.
--   **Genkit Errors**: This scaffold uses Genkit flows that are already implemented. If you encounter issues, ensure you are connected to the internet, as it makes calls to Google AI services.
+-   **Genkit Errors**: Ensure your `GEMINI_API_KEY` is correct and you have an active internet connection.
+-   **Python/ML Errors**: Make sure your Python virtual environment is activated and that you've placed the dataset files in the correct `models/demo/data/` directory.
