@@ -4,11 +4,13 @@ import { analyzeMultilingualReview } from '@/ai/flows/analyze-multilingual-revie
 import { explainTrustScoreVisually } from '@/ai/flows/explain-trust-score-visually';
 import { z } from 'zod';
 
+// This schema now validates all possible fields.
+// The logic below will pick the right one (e.g., product-other or product).
 const FormSchema = z.object({
   review: z.string().min(10, { message: 'Review must be at least 10 characters.' }),
-  product: z.string().min(1, { message: 'Product is required.' }),
-  platform: z.string().min(1, { message: 'Platform is required.' }),
-  language: z.string().min(1, { message: 'Language is required.' }),
+  product: z.string(),
+  platform: z.string(),
+  language: z.string(),
 });
 
 type AnalysisState = {
@@ -27,14 +29,18 @@ export async function analyzeReview(
   prevState: AnalysisState,
   formData: FormData
 ): Promise<AnalysisState> {
+  // Helper to get the value from 'other' field if it exists, otherwise from the select
+  const getFieldValue = (baseName: string) => {
+    return formData.get(baseName) as string || formData.get(`${baseName}-select`) as string;
+  };
 
   const rawFormData = {
     review: formData.get('review'),
-    product: formData.get('product'),
-    platform: formData.get('platform'),
-    language: formData.get('language'),
+    product: getFieldValue('product'),
+    platform: getFieldValue('platform'),
+    language: getFieldValue('language'),
   };
-  
+
   const validatedFields = FormSchema.safeParse(rawFormData);
   
   if (!validatedFields.success) {
