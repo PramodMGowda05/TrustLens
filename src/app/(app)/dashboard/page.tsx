@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StatCards } from '@/components/dashboard/stat-cards';
 import { ReviewForm } from '@/components/dashboard/review-form';
 import { RecentAnalyses } from '@/components/dashboard/recent-analyses';

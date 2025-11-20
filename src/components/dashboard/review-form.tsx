@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { useFormStatus } from 'react-dom';
 import {
   Card,
@@ -16,15 +16,15 @@ import { Button } from '../ui/button';
 import { analyzeReview } from '@/app/actions';
 import { AnalysisResult } from './analysis-result';
 import { Loader2 } from 'lucide-react';
-import { useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { Input } from '../ui/input';
 
 const initialState = {
-  status: 'idle',
+  status: 'idle' as 'idle' | 'validating' | 'success' | 'error',
   message: '',
-  data: null,
+  data: null as any,
+  fieldErrors: undefined as any,
 };
 
 function SubmitButton() {
