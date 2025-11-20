@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import { Bot, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -34,20 +35,21 @@ export default function LoginPage() {
                 placeholder="m@example.com"
                 required
                 defaultValue="user@trustlens.ai"
+                suppressHydrationWarning
               />
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
               </div>
-              <Input id="password" type="password" required defaultValue="password123" />
+              <Input id="password" type="password" required defaultValue="password123" suppressHydrationWarning />
             </div>
             <Link href="/dashboard" className="w-full">
-              <Button className="w-full">
+              <Button className="w-full" suppressHydrationWarning>
                 Sign in
               </Button>
             </Link>
-            <Button variant="outline" className="w-full">
+            <Button variant="outline" className="w-full" suppressHydrationWarning>
               <svg role="img" viewBox="0 0 24 24" className="mr-2 h-4 w-4">
                 <path
                   fill="currentColor"
