@@ -12,7 +12,7 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '../ui/sidebar';
+import { SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from '../ui/sidebar';
 import { cn } from '@/lib/utils';
 import { mockUser } from '@/lib/data';
 
@@ -74,6 +74,9 @@ export function MainNav() {
 
   return (
     <SidebarMenu>
+      <div className="hidden lg:block">
+        <SidebarTrigger />
+      </div>
       {navItems.map((item) => (
         <SidebarMenuItem key={item.href}>
           <Link href={item.href}>
@@ -83,7 +86,7 @@ export function MainNav() {
               tooltip={item.label}
             >
               {item.icon}
-              <span>{item.label}</span>
+              <span className="group-data-[collapsible=icon]:hidden">{item.label}</span>
             </SidebarMenuButton>
           </Link>
         </SidebarMenuItem>
@@ -91,7 +94,7 @@ export function MainNav() {
 
       {isAdmin && (
         <>
-          <div className="mt-4 mb-2 px-2 text-xs font-medium text-muted-foreground uppercase">
+          <div className="mt-4 mb-2 px-2 text-xs font-medium text-muted-foreground uppercase group-data-[collapsible=icon]:hidden">
             Admin
           </div>
           {adminNavItems.map((item) => (
@@ -103,7 +106,7 @@ export function MainNav() {
                   tooltip={item.label}
                 >
                   {item.icon}
-                  <span>{item.label}</span>
+                  <span className="group-data-[collapsible=icon]:hidden">{item.label}</span>
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
