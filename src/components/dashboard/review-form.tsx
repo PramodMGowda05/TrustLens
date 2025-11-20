@@ -1,6 +1,7 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import {
   Card,
   CardContent,
@@ -44,7 +45,7 @@ function SubmitButton() {
 }
 
 export function ReviewForm() {
-  const [state, formAction] = useFormState(analyzeReview, initialState);
+  const [state, formAction] = useActionState(analyzeReview, initialState);
   const { toast } = useToast();
 
   useEffect(() => {
