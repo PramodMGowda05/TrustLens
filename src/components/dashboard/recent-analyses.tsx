@@ -22,7 +22,7 @@ import { AnalysisResult } from './analysis-result';
 import type { recentAnalyses } from '@/lib/data';
 
 type RecentAnalysesProps = {
-  analyses: typeof recentAnalyses;
+  analyses: (typeof recentAnalyses)[0][];
 };
 
 export function RecentAnalyses({ analyses }: RecentAnalysesProps) {

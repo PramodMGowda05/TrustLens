@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { StatCards } from '@/components/dashboard/stat-cards';
 import { ReviewForm } from '@/components/dashboard/review-form';
 import { RecentAnalyses } from '@/components/dashboard/recent-analyses';
 import { recentAnalyses as initialAnalyses } from '@/lib/data';
 
 export default function DashboardPage() {
-  const [analyses, setAnalyses] = useState(initialAnalyses);
+  const [analyses, setAnalyses] = useState<(typeof initialAnalyses)[0][]>(initialAnalyses);
 
   const handleAnalysisComplete = (newAnalysis: any) => {
     // Add the new analysis to the top of the list
