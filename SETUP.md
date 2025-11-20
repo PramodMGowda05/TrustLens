@@ -58,7 +58,7 @@ The application is scaffolded to use Firebase for authentication. While the UI i
 
 5.  **Set up Genkit AI**:
     - The project uses Genkit for AI-powered analysis. You need to provide a Google AI API key.
-    - Visit [Google AI Studio](https://aistudio.google.com/app/apikey) to get your API key.
+    - See the section below on how to generate a key.
     - Add the key to your `.env.local` file.
 
     ```.env.local
@@ -67,7 +67,45 @@ The application is scaffolded to use Firebase for authentication. While the UI i
 
 ---
 
-## 3. Running the Application
+## 3. How to Generate a New Google AI API Key
+
+If you're facing API errors or need to refresh your credentials, follow these steps to get a new key.
+
+1.  **Navigate to Google AI Studio**:
+    - Open your web browser and go to [https://aistudio.google.com/](https://aistudio.google.com/).
+
+2.  **Sign In**:
+    - Sign in with your Google account if you haven't already.
+
+3.  **Access the API Key Page**:
+    - On the left-hand sidebar, click on **"Get API key"**.
+
+4.  **Create a New API Key**:
+    - On the API keys page, click the **"Create API key in new project"** button. This will instantly generate a new key for you.
+    - A dialog will appear displaying your new API key.
+
+5.  **Copy and Secure Your Key**:
+    - Click the copy icon next to the key to copy it to your clipboard.
+    - **Important**: Treat this key like a password. Do not share it publicly or commit it to version control.
+
+6.  **Update Your Environment File**:
+    - Open the `.env.local` file in your project's root directory.
+    - Replace the old key with the new one you just copied:
+
+    ```.env.local
+    GEMINI_API_KEY="YOUR_NEWLY_GENERATED_API_KEY"
+    ```
+
+7.  **Restart Your Application**:
+    - Stop your development server (Ctrl+C in the terminal).
+    - Restart it to ensure the new API key is loaded.
+
+    ```bash
+    npm run dev
+    ```
+---
+
+## 4. Running the Application
 
 Once the configuration is complete, you can start the development server.
 
@@ -79,7 +117,7 @@ The application will be available at `http://localhost:9002`.
 
 ---
 
-## 4. Testing the Application
+## 5. Testing the Application
 
 1.  **Login**:
     - The login page is the entry point. The scaffold uses mocked user data, so you can click the "Sign in" button directly to navigate to the dashboard at `/dashboard`.
@@ -95,7 +133,7 @@ The application will be available at `http://localhost:9002`.
 
 ---
 
-## 5. Running ML Demo Scripts (Optional)
+## 6. Running ML Demo Scripts (Optional)
 
 The ML models in the `/models/demo` directory are for demonstration purposes only and are **not** used for live predictions in the app. They showcase a potential training pipeline.
 

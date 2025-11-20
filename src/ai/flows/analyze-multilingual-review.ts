@@ -36,6 +36,7 @@ export async function analyzeMultilingualReview(input: AnalyzeMultilingualReview
 
 const prompt = ai.definePrompt({
   name: 'analyzeMultilingualReviewPrompt',
+  model: 'googleai/gemini-pro',
   input: {schema: AnalyzeMultilingualReviewInputSchema},
   output: {schema: AnalyzeMultilingualReviewOutputSchema},
   prompt: `You are an AI expert in identifying fake reviews.
