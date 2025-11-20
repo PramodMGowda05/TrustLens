@@ -12,21 +12,14 @@ import {
 } from '../ui/card';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../ui/select';
 import { Button } from '../ui/button';
-import { products, platforms, languages } from '@/lib/data';
 import { analyzeReview } from '@/app/actions';
 import { AnalysisResult } from './analysis-result';
 import { Loader2 } from 'lucide-react';
 import { useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
+import { Input } from '../ui/input';
 
 const initialState = {
   status: 'idle',
@@ -44,7 +37,11 @@ function SubmitButton() {
   );
 }
 
-export function ReviewForm() {
+type ReviewFormProps = {
+  onAnalysisComplete: (newAnalysis: any) => void;
+};
+
+export function ReviewForm({ onAnalysisComplete }: ReviewFormProps) {
   const [state, formAction] = useActionState(analyzeReview, initialState);
   const { toast } = useToast();
 
@@ -56,7 +53,14 @@ export function ReviewForm() {
         description: state.message,
       });
     }
-  }, [state, toast]);
+    if (state.status === 'success' && state.data) {
+      onAnalysisComplete({
+        ...state.data,
+        id: new Date().getTime(),
+        timestamp: new Date().toISOString(),
+      });
+    }
+  }, [state, toast, onAnalysisComplete]);
 
   return (
     <form action={formAction}>
@@ -81,48 +85,33 @@ export function ReviewForm() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label htmlFor="product">Product</Label>
-              <Select name="product" defaultValue={products[0].name}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a product" />
-                </SelectTrigger>
-                <SelectContent>
-                  {products.map((product) => (
-                    <SelectItem key={product.id} value={product.name}>
-                      {product.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Input
+                id="product"
+                name="product"
+                placeholder="e.g., Smartwatch Series X"
+                defaultValue="Smartwatch Series X"
+                required
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="platform">Platform</Label>
-              <Select name="platform" defaultValue={platforms[0].name}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a platform" />
-                </SelectTrigger>
-                <SelectContent>
-                  {platforms.map((platform) => (
-                    <SelectItem key={platform.id} value={platform.name}>
-                      {platform.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Input
+                id="platform"
+                name="platform"
+                placeholder="e.g., Amazon"
+                defaultValue="Amazon"
+                required
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="language">Language</Label>
-              <Select name="language" defaultValue={languages[0].name}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a language" />
-                </SelectTrigger>
-                <SelectContent>
-                  {languages.map((language) => (
-                    <SelectItem key={language.id} value={language.name}>
-                      {language.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Input
+                id="language"
+                name="language"
+                placeholder="e.g., English"
+                defaultValue="English"
+                required
+              />
             </div>
           </div>
         </CardContent>

@@ -6,9 +6,9 @@ import { z } from 'zod';
 
 const FormSchema = z.object({
   review: z.string().min(10, { message: 'Review must be at least 10 characters.' }),
-  product: z.string(),
-  platform: z.string(),
-  language: z.string(),
+  product: z.string().min(1, { message: 'Product is required.' }),
+  platform: z.string().min(1, { message: 'Platform is required.' }),
+  language: z.string().min(1, { message: 'Language is required.' }),
 });
 
 type AnalysisState = {
@@ -17,6 +17,9 @@ type AnalysisState = {
   data: any | null;
   fieldErrors?: {
     review?: string[];
+    product?: string[];
+    platform?: string[];
+    language?: string[];
   };
 };
 
@@ -25,7 +28,13 @@ export async function analyzeReview(
   formData: FormData
 ): Promise<AnalysisState> {
 
-  const rawFormData = Object.fromEntries(formData.entries());
+  const rawFormData = {
+    review: formData.get('review'),
+    product: formData.get('product'),
+    platform: formData.get('platform'),
+    language: formData.get('language'),
+  };
+  
   const validatedFields = FormSchema.safeParse(rawFormData);
   
   if (!validatedFields.success) {
@@ -75,6 +84,9 @@ export async function analyzeReview(
       data: {
         ...analysisResult,
         ...visualExplanation,
+        // Also pass back the input fields to be added to the recent list
+        reviewText: validatedFields.data.review,
+        product: validatedFields.data.product,
       },
     };
   } catch (error) {

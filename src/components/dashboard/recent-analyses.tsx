@@ -1,3 +1,5 @@
+'use client';
+
 import { formatDistanceToNow } from 'date-fns';
 import {
   Card,
@@ -6,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card';
-import { recentAnalyses } from '@/lib/data';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import {
@@ -18,8 +19,13 @@ import {
   DialogTrigger,
 } from '../ui/dialog';
 import { AnalysisResult } from './analysis-result';
+import type { recentAnalyses } from '@/lib/data';
 
-export function RecentAnalyses() {
+type RecentAnalysesProps = {
+  analyses: typeof recentAnalyses;
+};
+
+export function RecentAnalyses({ analyses }: RecentAnalysesProps) {
   return (
     <Card>
       <CardHeader>
@@ -28,7 +34,7 @@ export function RecentAnalyses() {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {recentAnalyses.map((analysis) => (
+          {analyses.map((analysis) => (
             <div
               key={analysis.id}
               className="flex items-center justify-between"
