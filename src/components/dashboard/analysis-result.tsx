@@ -80,23 +80,3 @@ export function AnalysisResult({ result }) {
     </Card>
   );
 }
-
-// Override Progress component to allow custom indicator color
-const OldProgress = Progress;
-const NewProgress = ({ indicatorClassName, ...props }) => (
-  <OldProgress
-    {...props}
-    // @ts-ignore
-    children={
-      <OldProgress.Indicator
-        className={indicatorClassName}
-        style={{ transform: `translateX(-${100 - (props.value || 0)}%)` }}
-      />
-    }
-  />
-);
-
-Progress.Indicator = OldProgress.Indicator;
-// @ts-ignore
-Progress.Root = NewProgress;
-
