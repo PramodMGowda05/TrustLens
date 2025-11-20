@@ -35,21 +35,20 @@ export default function LoginPage() {
                 placeholder="m@example.com"
                 required
                 defaultValue="user@trustlens.ai"
-                suppressHydrationWarning
               />
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
               </div>
-              <Input id="password" type="password" required defaultValue="password123" suppressHydrationWarning />
+              <Input id="password" type="password" required defaultValue="password123" />
             </div>
             <Link href="/dashboard" className="w-full">
-              <Button className="w-full" suppressHydrationWarning>
+              <Button className="w-full">
                 Sign in
               </Button>
             </Link>
-            <Button variant="outline" className="w-full" suppressHydrationWarning>
+            <Button variant="outline" className="w-full">
               <svg role="img" viewBox="0 0 24 24" className="mr-2 h-4 w-4">
                 <path
                   fill="currentColor"
