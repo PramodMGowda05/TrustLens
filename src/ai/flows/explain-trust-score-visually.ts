@@ -44,7 +44,6 @@ export async function explainTrustScoreVisually(
 
 const prompt = ai.definePrompt({
   name: 'explainTrustScoreVisuallyPrompt',
-  model: 'googleai/gemini-pro',
   input: {schema: ExplainTrustScoreVisuallyInputSchema},
   output: {schema: ExplainTrustScoreVisuallyOutputSchema},
   prompt: `You are an AI expert in analyzing customer reviews to determine their authenticity.
