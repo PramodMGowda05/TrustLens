@@ -97,8 +97,9 @@ If you're facing API errors or need to refresh your credentials, follow these st
     ```
 
 7.  **Restart Your Application**:
-    - Stop your development server (Ctrl+C in the terminal).
-    - Restart it to ensure the new API key is loaded.
+    - **This is a critical step.** Stop your development server (Ctrl+C in the terminal).
+    - The server does not automatically detect changes to `.env.local`. You must restart it to load the new API key.
+    - Restart the server:
 
     ```bash
     npm run dev
@@ -180,5 +181,5 @@ The ML models in the `/models/demo` directory are for demonstration purposes onl
 ## Troubleshooting
 
 -   **Firebase Errors**: Double-check that your `.env.local` file has the correct `NEXT_PUBLIC_` prefixes and that the values match your Firebase project's web config.
--   **Genkit Errors**: Ensure your `GEMINI_API_KEY` is correct and you have an active internet connection.
+-   **Genkit Errors**: Ensure your `GEMINI_API_KEY` is correct, you have an active internet connection, and you have restarted the dev server after changing the key.
 -   **Python/ML Errors**: Make sure your Python virtual environment is activated and that you've placed the dataset files in the correct `models/demo/data/` directory.
